@@ -1,6 +1,3 @@
-from unittest import case
-
-
 class Node:
     def __init__(self,valor): #inicializamos valores
         self.valor=valor #Damos el valor al nodo
