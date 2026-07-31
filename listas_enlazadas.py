@@ -1,69 +1,74 @@
+
 class Node:
     def __init__(self,valor): #inicializamos valores
         self.valor=valor #Damos el valor al nodo
         self.next = None #Damos el valor de siguiente a nulo
 
-class SinglyLinkedList: 
+class SinglyLinkedList: #Creamos la lista
     def __init__(self):
-        self.head = None
+        self.head = None #Damos un valor de inicio a nulo, pues empieza vacia
 
-    def esVacia(self):
+    def esVacia(self): # Comprobamos si la lista está vacia
         return self.head is None
 
-    def insert(self, valor): 
-        new_node = Node(valor)
-        if(self.head is None):
+    def insert(self, valor): #Insertamos un valor al final de la lista
+        new_node = Node(valor) 
+        if(self.head is None): #verificamos si está vacia, si lo está, a la primera posición se le asigna el valor del nuevo nodo
             self.head = new_node
             return
         current = self.head
-        while(current.next):
+        while(current.next): #Recorremos la lista la final para poner el objeto al final de la lista
             current = current.next
-        current.next = new_node
+        current.next = new_node # lo ponemos
 
-    def insertInicio(self, valor):
+    def insertInicio(self, valor): #Lo colocamos al inicio
         new_node = Node(valor)
-        new_node.next=self.head
+        new_node.next=self.head #el siguiente nodo tendrá el valor del nodo inicial
         self.head=new_node
 
-    def insert_posicion(self, valor, posicion):
+    def insert_posicion(self, valor, posicion): #insertamos segun una posición a elección nuestra
         new_node = Node(valor)
         if (self.head is None):
             self.head = new_node
             return
         current = self.head
         cantidad = 0
-        while(current and cantidad != posicion -1 ):
+        while(current and cantidad != posicion -1 ):  #Sin el -1 todo avanzaria hasta él final y nunca se coincidiria
             current = current.next
             cantidad += 1
-        if cantidad == posicion -1:
+        if cantidad == posicion -1: #Nosotros asignamos una posición, pero sin el -1 lo pondría en una ubicación despues, x ejemplo, queremos en la 3, lo pondría en la 4
+            #en vez de en la 3ra posición
             new_node.next = current.next
             current.next = new_node
 
-    def insertMedio(self, valor):
+    def insertMedio(self, valor): #insertamos en medio
         new_node = Node(valor)
 
         if self.head is None:
             self.head = new_node
             return
 
+        #usamos doble puntero para hallar al centro en una sola pasada
+        #"Slow" Avanza de uno en uno y "fast" de dos en dos
         slow = self.head
         fast = self.head
 
         while fast is not None and fast.next is not None:
             slow = slow.next
             fast = fast.next.next
+        #cuando fast llega al final, slow está por la mitad
 
         new_node.next = slow.next
         slow.next = new_node 
             
-    def display(self):
+    def display(self): # Muestra la lista 
         current = self.head
         while(current):
             print(current.valor, end=" -> ")
             current = current.next
         print("None")
 
-    def eliminarEnPosicion(self, posicion):
+    def eliminarEnPosicion(self, posicion): #elimina la ubicación del objeto en x nodo
     # Lista vacía
         if self.head is None:
             print("La lista está vacía.")
@@ -87,7 +92,7 @@ class SinglyLinkedList:
 
 
 
-    def eliminarInicio(self):
+    def eliminarInicio(self): #se encarga de eliminar el primer objeto
         if self.head is None:
             print("La lista está vacía")
             return
@@ -109,10 +114,10 @@ class SinglyLinkedList:
 
         current.next = None #el siguiente le damos el valor de nada
 
-    def buscarValor(self, valor):
+    def buscarValor(self, valor): 
         current = self.head
 
-        while(current):
+        while(current): #buscamos el valor con un while verificando si el objeto existe
             if current.valor == valor:
                 return True
             current = current.next
@@ -124,6 +129,8 @@ lista1=SinglyLinkedList()
 lista1.insert(10)
 lista1.insert(20)
 lista1.insert(30)
+lista1.insert(40)
+lista1.insert(50)
 
 
 
@@ -168,6 +175,7 @@ lista1.insert(30)
 
 
 def Menu(): 
+    #creamos el menu:
     menu = """
     1. Insertar al inicio
     2. Insertar al final
@@ -182,11 +190,12 @@ def Menu():
     11. Salir
     """
 
-    
+    #creamos la variable bool seguir para que mientras sea true el while siga preguntando si desea hacer algo más
     seguir = True
     while seguir:
         print(menu)
         opcion = int(input("Ingrese la opción deseada: "))
+        #usamos los case para evitar el uso de if 
         match opcion:
                 case 1:
                     opcion = int(input("Ingrese el valor a insertar al inicio: "))
@@ -226,10 +235,10 @@ def Menu():
                         print("La lista no está vacía.")
                 case 11:
                         print("Saliendo del programa.")
-                        seguir = False
+                        seguir = False #cambiamos el valor de seguir y salir del whule
                 case _:
-                        print("Opción inválida. Por favor, ingrese un número del 1 al 11.")
+                        print("Opción inválida. Por favor, ingrese un número del 1 al 11.") #y si se elige otra opción que mencione que no es una opción
 
 
 
-Menu()
+Menu()  
