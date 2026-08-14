@@ -300,13 +300,13 @@ if __name__ == "__main__":
             + str(lista.tamaño_lista())
             + "\n"
             "Temperatura Promedio: "
-            + str(lista.promedio_temperatura())
-            + "\n"
+            + str(lista.promedio_temperatura()) + "°C"
+            + "\n" 
             "Temperatura Mayor: "
-            + str(lista.temperatura_mayor())
+            + str(lista.temperatura_mayor()) + "°C"
             + "\n"
             "Temperatura Menor: "
-            + str(lista.temperatura_menor())
+            + str(lista.temperatura_menor()) + "°C"
             + "\n"
             "Elaborado por: Jefté Daniel Chaves Bolaños"
         )
