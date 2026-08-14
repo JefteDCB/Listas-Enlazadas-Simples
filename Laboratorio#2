@@ -158,8 +158,37 @@ class DoblementeEnlazada:
 
         return valor_eliminado
 
+    def promedio_temperatura(self):
+        actual = self.cabeza
+        suma = 0
+        while(actual):
+            suma += actual.valor
+            actual = actual.siguiente
+
+        return suma / self.tamaño_lista()
+
+    def temperatura_mayor(self):
+        actual = self.cabeza
+        temperaturaMayor = 0
+        while(actual):
+            if actual.valor > temperaturaMayor:
+                temperaturaMayor = actual.valor
+            actual = actual.siguiente
+
+        return temperaturaMayor
+
+    def temperatura_menor(self):
+        actual = self.cabeza
+        temperaturaMenor = actual.valor
+
+        while(actual):
+            if actual.valor < temperaturaMenor:
+                temperaturaMenor = actual.valor
+            actual = actual.siguiente
+
+        return temperaturaMenor
         
-def menu():
+def main():
     lista1 = DoblementeEnlazada()
 
     menu_texto = """
@@ -231,4 +260,53 @@ def menu():
                 print("Opción inválida. Por favor, ingrese un número del 1 al 11.")
 
 if __name__ == "__main__":
-    menu()
+# Crear la lista doblemente enlazada
+    lista = DoblementeEnlazada()
+    try:
+        with open("datos.txt", "r") as archivo:
+            for linea in archivo:
+                linea = linea.strip()
+                # Evitar líneas vacías
+                if linea != "":
+                    valor = int(linea)
+                    # Insertar el valor en la lista
+                    lista.agregarInicio(valor)
+                    lista.recorrer_delante()
+                    print(f"Cantidad de elementos: {lista.tamaño_lista()}")
+
+    except FileNotFoundError:
+        print("Error: el archivo datos.txt no existe.")
+        exit()
+
+    except ValueError:
+        print("Error: el archivo contiene un dato que no es entero.")
+        exit()
+
+
+    print("Temperatura Promedio: ")
+    print(lista.promedio_temperatura())
+    print("Mayor temperatura")
+    print (lista.temperatura_mayor())
+    print("Menor Temperatura")
+    print(lista.temperatura_menor())
+
+
+    with open("Reporte.txt", "w") as archivo:
+        archivo.write("====================================\n")
+        archivo.write("    REPORTE DE TEMPERATURAS\n")
+        archivo.write("====================================\n\n")
+        archivo.write(
+            "Cantidad de temperaturas: "
+            + str(lista.tamaño_lista())
+            + "\n"
+            "Temperatura Promedio: "
+            + str(lista.promedio_temperatura())
+            + "\n"
+            "Temperatura Mayor: "
+            + str(lista.temperatura_mayor())
+            + "\n"
+            "Temperatura Menor: "
+            + str(lista.temperatura_menor())
+            + "\n"
+            "Elaborado por: Jefté Daniel Chaves Bolaños"
+        )
