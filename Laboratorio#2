@@ -1,0 +1,234 @@
+class Node:
+    def __init__(self, valor):
+        self.valor = valor
+        self.siguiente = None
+        self.anterior = None
+
+class DoblementeEnlazada:
+    def __init__(self):
+        self.cabeza = None
+        self.cola = None
+        self.tamano = 0
+
+
+    def estaVacia(self):
+        return self.cabeza is None
+
+    def agregarInicio(self, valor):
+        nuevo = Node(valor)
+
+        if self.cabeza is None:
+            self.cabeza = nuevo
+            self.cola = nuevo
+        else:
+            nuevo.siguiente = self.cabeza
+            self.cabeza.anterior = nuevo
+            self.cabeza = nuevo
+        self.tamano += 1
+
+    def recorrer_delante(self):
+        actual = self.cabeza
+
+        while(actual):
+            print(actual.valor, end=" <-> ")
+            actual = actual.siguiente
+        print("None")
+
+    def recorrer_atras(self):
+        actual = self.cola
+
+        while(actual):
+            print(actual.valor, end=" <-> ")
+            actual = actual.anterior
+        print("None")
+
+    def buscar(self, valor):
+        actual = self.cabeza
+        posicion = 0
+        while actual:
+            if(actual.valor == valor):
+                print("Se encontro el resultado en la posición: ")
+                return posicion
+            actual = actual.siguiente
+            posicion += 1
+        print("No se encontró el resultado")
+        return -1
+
+    def tamaño_lista(self):
+        return self.tamano
+
+    def eliminarAlFinal(self):
+        if(self.estaVacia()):
+            print("No se puede eliminar un elemento en una lista vacia")
+            return 
+        if(self.cabeza == self.cola):
+            self.cabeza = None
+            self.cola = None
+        else:
+            self.cola = self.cola.anterior
+            self.cola.siguiente = None
+        self.tamano -= 1
+
+    def insertarAlFinal(self, valor):
+
+        nuevo = Node(valor)
+
+        if(self.estaVacia()):
+            self.cabeza = nuevo
+            self.cola = nuevo
+        else:
+            nuevo.anterior = self.cola
+            self.cola.siguiente = nuevo
+            self.cola = nuevo
+        self.tamano += 1
+
+
+    def insertarAlMedio(self, valor, posicion):
+        if posicion<0 or posicion> self.tamano:
+            print("Posición invalidad")
+            return
+
+        if(posicion == 0):
+            self.agregarInicio(valor)
+            return
+
+        if(posicion == self.tamano):
+            self.insertarAlFinal(valor)
+            return 
+
+        nuevo = Node(valor)
+
+        actual = self.cabeza
+
+        for i in range(posicion):
+            actual = actual.siguiente
+
+        anterior = actual.anterior
+
+        nuevo.anterior = anterior
+        nuevo.siguiente = actual
+
+        anterior.siguiente = nuevo
+        actual.anterior = nuevo
+
+        self.tamano += 1
+        
+
+    def eliminarInicio(self):
+        if(self.estaVacia()):
+            print("No se puede eliminar un elemento en una lista vacia")
+            return 
+
+        if self.cabeza == self.cola:
+            self.cabeza = None
+            self.cola = None
+        else:
+            self.cabeza = self.cabeza.siguiente
+            self.cabeza.anterior = None
+        self.tamano -= 1
+
+    
+    def eliminarMedio(self, posicion):
+
+        if posicion<0 or posicion> self.tamano:
+            print("Posición invalida")
+            return 
+
+        if posicion == 0:
+            self.eliminarInicio()
+            return
+        if posicion == self.tamano - 1:
+            self.eliminarAlFinal()
+            return
+
+        actual = self.cabeza
+
+        for i in range(posicion):
+            actual = actual.siguiente
+
+        valor_eliminado = actual.valor
+
+        anterior = actual.anterior
+        siguiente = actual.siguiente
+
+        anterior.siguiente = siguiente
+        siguiente.anterior = anterior
+
+        self.tamano -= 1
+
+        return valor_eliminado
+
+        
+def menu():
+    lista1 = DoblementeEnlazada()
+
+    menu_texto = """
+    1. Insertar al inicio
+    2. Insertar al final
+    3. Insertar en posición específica (medio)
+    4. Eliminar al inicio
+    5. Eliminar al final
+    6. Eliminar en posición específica (medio)
+    7. Buscar valor
+    8. Mostrar lista (de adelante hacia atrás)
+    9. Mostrar lista (de atrás hacia adelante)
+    10. Verificar si la lista está vacía
+    11. Salir
+    """
+
+    seguir = True
+    while seguir:
+        print(menu_texto)
+        opcion = int(input("Ingrese la opción deseada: "))
+
+        match opcion:
+            case 1:
+                valor = int(input("Ingrese el valor a insertar al inicio: "))
+                lista1.agregarInicio(valor)
+
+            case 2:
+                valor = int(input("Ingrese el valor a insertar al final: "))
+                lista1.insertarAlFinal(valor)
+
+            case 3:
+                valor = int(input("Ingrese el valor a insertar: "))
+                posicion = int(input("Ingrese la posición donde insertar: "))
+                lista1.insertarAlMedio(valor, posicion)
+
+            case 4:
+                lista1.eliminarInicio()
+                print("Se ha eliminado el primer nodo de la lista.")
+
+            case 5:
+                lista1.eliminarAlFinal()
+                print("Se ha eliminado el último nodo de la lista.")
+
+            case 6:
+                posicion = int(input("Ingrese la posición del nodo a eliminar: "))
+                lista1.eliminarMedio(posicion)
+
+            case 7:
+                valor = int(input("Ingrese el valor a buscar: "))
+                lista1.buscar(valor)
+
+            case 8:
+                lista1.recorrer_delante()
+
+            case 9:
+                lista1.recorrer_atras()
+
+            case 10:
+                if lista1.estaVacia():
+                    print("La lista está vacía.")
+                else:
+                    print("La lista no está vacía.")
+
+            case 11:   
+                print("Saliendo del programa.")
+                seguir = False
+
+            case _:
+                print("Opción inválida. Por favor, ingrese un número del 1 al 11.")
+
+if __name__ == "__main__":
+    menu()
